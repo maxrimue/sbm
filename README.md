@@ -10,10 +10,12 @@ You can install sbm with `make install`.
 Usage:
 
 ```
-sbm -i <bin>	Installs binary
-sbm -r <bin>
-sbm -d <bin>	Removes binary
-sbm -u <bin>	Updates binary
+sbm -i <bin>  Installs binary
+
+sbm -r <bin>  Removes binary
+sbm -d <bin>	
+
+sbm -u <bin>  Updates binary
 
 <bin>: Name of local and installed binary
 ```
