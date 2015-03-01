@@ -40,10 +40,12 @@ elif [ $1 = "-u" ]; then
  fi
 
 elif [ $1 = "--help" -o  $1 = "-h" ]; then
- echo "-i <bin>		Installs binary"
- echo "-r <bin>			       "
- echo "-d <bin>		Removes binary"
- echo "-u <bin>		Updates binary"
+ echo "sbm -i <bin>		Installs binary"
+ echo ""
+ echo "sbm -r <bin>		Removes binary"
+ echo "sbm -d <bin>		"
+ echo ""
+ echo "sbm -u <bin>		Updates binary"
  echo ""
  echo "<bin>: Name of local and installed binary"
 
