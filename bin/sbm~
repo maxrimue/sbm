@@ -22,7 +22,7 @@ if [ $1 = "-i" ]; then
 
 elif [ $1 = "-d" -o $1 = "-r" ]; then
 
- if [ -e /usr/local/bin/$2 ]; then
+ if [ -e /usr/local/bin/$2 -a /usr/local/bin/$2 != /usr/local/bin/]; then
   echo "Removing $2..."
   sudo rm -r /usr/local/bin/$2
   echo "Complete."
