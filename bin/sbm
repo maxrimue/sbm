@@ -8,8 +8,8 @@ install() {
   cp "$1" "$SBM_PREFIX"
 }
 
-remove() {
-  [ -z "$1" ] && abort "No binary for removal specified"
+delete() {
+  [ -z "$1" ] && abort "No binary for deletion specified"
   [ -e "$SBM_PREFIX/$1" ] || abort "'$1' isn't an installed binary at '$SBM_PREFIX'"
   rm "$SBM_PREFIX/$1"
 }
@@ -25,7 +25,7 @@ help() {
   printf "
   \e[1msbm -i|--install <bin>              \e[0mcInstalls binary
 
-  \e[1msbm -rm|--remove <bin>              \e[0mRemoves installed binary
+  \e[1msbm -d|--delete <bin>               \e[0mDeletes installed binary
 
   \e[1msbm -u|--update <bin> (<new bin>)   \e[0mReplaces installed binary with a new one, or, if <new bin> is not specified, replaces installed <bin> by the same named <bin> in the current working directory, if existing.
 
@@ -41,7 +41,7 @@ abort() {
 while test $# -ne 0; do
   case $1 in
     -i|--install) install "$2" ;;
-    -rm|--remove) remove "$2" ;;
+    -d|--delete) delete "$2" ;;
     -u|--update) update "$2" "$3" ;;
     -h|--help) help ;;
   esac

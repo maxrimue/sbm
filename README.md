@@ -11,7 +11,7 @@ Usage:
 ```
 sbm -i|--install <bin>              Installs binary
 
-sbm -rm|--remove <bin>              Removes installed binary
+sbm -d|--delete <bin>               Deletes installed binary
 
 sbm -u|--update <bin> (<new bin>)   Replaces installed binary with a new one, or, if <new bin> is not specified, replaces
                                     installed <bin> by the same named <bin> in the current working directory, if existing.
