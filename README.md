@@ -1,22 +1,20 @@
 ### sbm
-This is a little tool I wrote for myself.
-All it does, is to install, remove and update binaries in the `/usr/local/bin/` 
-path.
+This is a little tool I wrote primarily for myself.
+All it does, is to install, remove and update binaries in `/usr/local/bin`.
 
-## RUN
+## Run
 
-You can install sbm with `make install`.
+You can install `sbm` with `make install`, and also adjust the path where binaries are managed with the `$SBM_PREFIX` variable.
 
 Usage:
 
 ```
-sbm -i <bin>            Installs binary
+sbm -i|--install <bin>              Installs binary
 
-sbm -r <bin>            Removes installed binary
-sbm -d <bin>	
+sbm -rm|--remove <bin>              Removes installed binary
 
-sbm -u <bin> <new bin>  Replaces installed binary with a new one
+sbm -u|--update <bin> (<new bin>)   Replaces installed binary with a new one, or, if <new bin> is not specified, replaces
+                                    installed <bin> by the same named <bin> in the current working directory, if existing.
 
-sbm -u <bin>            Updates installed binary
+sbm -h|--help                       Shows this documentation
 ```
-

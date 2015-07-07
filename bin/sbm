@@ -1,69 +1,51 @@
 #!/bin/bash
-#A simple package manager for user binaries
+#Simple binary manager
 
-if [ -z "$1" -o -z "$2" ]; then
- echo "Not enough arguments, see --help or -h for help."
- exit
-fi
+SBM_PREFIX=${SBM_PREFIX-/usr/local/bin}
 
-if [ -z "$3" ]; then
- THIRDVALUE=false
-else
- THIRDVALUE=true
-fi
+install() {
+  [ -z "$1" ] && abort "No binary for installation specified"
+  cp "$1" "$SBM_PREFIX"
+}
 
-if [ $1 = "-i" ]; then
+remove() {
+  [ -z "$1" ] && abort "No binary for removal specified"
+  [ -e "$SBM_PREFIX/$1" ] || abort "'$1' isn't an installed binary at '$SBM_PREFIX'"
+  rm "$SBM_PREFIX/$1"
+}
 
- if [ -e $2 ]; then
-  if [ -e /usr/local/bin/$2 ]; then
-   echo "$2 already is installed. Please use -u to update the installed version with the local one."
-  else 
-   echo "Installing $2..."
-   sudo cp $2 /usr/local/bin/
-   echo "Complete."
-  fi
- else
-  echo "$2 is not a binary, aborting."
- fi
+update() {
+  [ -z "$1" ] && abort "No binary for update specified"
+  local replacement="$2"
+  [ -z "$2" ] && replacement="$1"
+  cp "$replacement" "$SBM_PREFIX" || abort "Replacing '$1' in '$SBM_PREFIX' with '$replacement' failed"
+}
 
-elif [ $1 = "-d" -o $1 = "-r" ]; then
+help() {
+  printf "
+  \e[1msbm -i|--install <bin>              \e[0mcInstalls binary
 
- if [ -e /usr/local/bin/$2 ]; then
-  echo "Removing $2..."
-  sudo rm -r /usr/local/bin/$2
-  echo "Complete."
- else
-  echo "No installed binary with the name $2 found, aborting."
- fi 
+  \e[1msbm -rm|--remove <bin>              \e[0mRemoves installed binary
 
-elif [ $1 = "-u" ]; then
- echo "Updating $2..."
- if [ -e /usr/local/bin/$2 ]; then
-  if [ -e $2 -a $THIRDVALUE = false ]; then
-   sudo rm -r /usr/local/bin/$2
-   sudo cp $2 /usr/local/bin/$2
-   echo "Complete."
-  elif [ -e $3 -a $THIRDVALUE = true ]; then
-   echo "Replacing installed $2 with newer $3..."
-   sudo rm -r /usr/local/bin/$2
-   sudo cp $3 /usr/local/bin/$3
-  else
-   echo "No local file named $2 found, aborting."
-  fi
- else
-  echo "$2 is not installed. Please use -i to install."
- fi
+  \e[1msbm -u|--update <bin> (<new bin>)   \e[0mReplaces installed binary with a new one, or, if <new bin> is not specified, replaces installed <bin> by the same named <bin> in the current working directory, if existing.
 
-elif [ $1 = "--help" -o  $1 = "-h" ]; then
- echo "sbm -i <bin>		Installs binary"
- echo ""
- echo "sbm -r <bin>		Removes instaled binary"
- echo "sbm -d <bin>		"
- echo ""
- echo "sbm -u <bin>		Updates installed binary"
- echo ""
- echo "sbm -u <bin> <new bin>	Replaces installed binary with new binary"
+  \e[1msbm -h|--help                       \e[0mShows this documentation\n\n"
+}
 
-else
- echo "Command not found, see --help or -h for help."
-fi
+abort() {
+  printf "\e[31mError:\e[0m %s\n" "$1"
+  exit 1
+}
+
+[ -z "$1" ] && abort "At least one argument required. Try 'sbm --help' for help"
+while test $# -ne 0; do
+  case $1 in
+    -i|--install) install "$2" ;;
+    -rm|--remove) remove "$2" ;;
+    -u|--update) update "$2" "$3" ;;
+    -h|--help) help ;;
+  esac
+  shift
+done
+
+exit 0
