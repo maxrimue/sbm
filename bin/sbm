@@ -5,12 +5,12 @@ SBM_PREFIX=${SBM_PREFIX-/usr/local/bin}
 
 install() {
   [ -z "$1" ] && abort "No binary for installation specified"
-  cp "$1" "$SBM_PREFIX"
+  cp "$1" "$SBM_PREFIX" && chmod +x "$SBM_PREFIX/$1"
 }
 
 delete() {
   [ -z "$1" ] && abort "No binary for deletion specified"
-  [ -e "$SBM_PREFIX/$1" ] || abort "'$1' isn't an installed binary at '$SBM_PREFIX'"
+  [ -e "$SBM_PREFIX/$1" ] || abort "'$1' could not be removed from '$SBM_PREFIX'"
   rm "$SBM_PREFIX/$1"
 }
 
@@ -23,11 +23,15 @@ update() {
 
 help() {
   printf "
-  \e[1msbm -i|--install <bin>              \e[0mcInstalls binary
+  \e[1msbm -i|--install <bin>              \e[0mInstalls binary
 
   \e[1msbm -d|--delete <bin>               \e[0mDeletes installed binary
 
-  \e[1msbm -u|--update <bin> (<new bin>)   \e[0mReplaces installed binary with a new one, or, if <new bin> is not specified, replaces installed <bin> by the same named <bin> in the current working directory, if existing.
+  \e[1msbm -u|--update <bin> (<new bin>)
+		\e[0mReplaces installed binary with a new one,
+		or, if <new bin> is not specified, replaces installed
+		<bin> by the same named <bin> in the
+		current working directory, if existing.
 
   \e[1msbm -h|--help                       \e[0mShows this documentation\n\n"
 }
